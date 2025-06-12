@@ -54,3 +54,6 @@ class Config:
     def get_api_key(self) -> Optional[str]:
         """Get the Google API Key from environment"""
         return os.environ.get("GEMINI_API_KEY")
+    
+
+config = Config()

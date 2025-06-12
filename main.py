@@ -12,7 +12,7 @@ from document_processor import create_document_processor
 from vector_store import create_vector_store_manager
 from qa_chain import create_qa_chain_manager
 from ui_components  import UIComponents
-
+from config import Config
 
 class ReasearchToolApp:
     """Main Class for the reaseach tool"""
@@ -42,7 +42,7 @@ class ReasearchToolApp:
         
         try:
             if setup_gemini_api(api_key):
-                config.set_api_key(api_key)
+                Config.set_api_key(api_key)
                 st.session_state.api_key_configured = True
 
             else:
@@ -130,7 +130,7 @@ class ReasearchToolApp:
             UIComponents.render_footage()
             return
         
-        if not st.session_state.api_key_configured or api_key != config.get_api_key():
+        if not st.session_state.api_key_configured or api_key != Config.get_api_key():
             with st.spinner("Setting up API and Initializing components..."):
                 if not self.setup_managers(api_key,chunk_size, chunk_overlap):
                     st.error("Failed to setup you api key. Please check you API-KEY")
