@@ -110,7 +110,7 @@ class UIComponents:
             "Documents to Retrieve",
             min_value=1,
             max_value=10,
-            value=config.retrieval.search_k,
+            value= Config.retrieval.search_k,
             help="Number of relevant documents to retrieve for each query"
         )
         
