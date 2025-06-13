@@ -4,7 +4,7 @@ from utils import (
     setup_gemini_api,
     parse_urls_from_input,
     validate_urls,
-    show_message_error,
+    show_error_message,
     show_success_message
 )
 
@@ -66,13 +66,13 @@ class ReasearchToolApp:
             return True
     
         except Exception as e:
-            show_message_error(e,"Manager Setup")
+            show_error_message(e,"Manager Setup")
             return False
         
     def process_urls(self,urls: List[str]) -> bool:
         try:
             if not st.session_state.document_processor:
-                show_message_error(ValueError("Document processor not initialized"),"URL Processing")
+                show_error_message(ValueError("Document processor not initialized"),"URL Processing")
                 return False
             
             chunks = st.session_state.document_processor.process_url(urls)
@@ -100,13 +100,13 @@ class ReasearchToolApp:
         
 
         except Exception as e:
-            show_message_error(e,"URL Processing Pipeline")
+            show_error_message(e,"URL Processing Pipeline")
             return False
         
     def handle_query(self, query: str):
         try:
             if not st.session_state.qa_chain_manager:
-                show_message_error(ValueError("QA Chain not ready"), "Query Processing")
+                show_error_message(ValueError("QA Chain not ready"), "Query Processing")
                 return
             
             respone = st.session_state.qa_chain_manager.ask_question(query)
@@ -118,7 +118,7 @@ class ReasearchToolApp:
                 st.error("Failed to get answer. Please Try Again")
 
         except Exception as e:
-            show_message_error(e,"Query Processing")
+            show_error_message(e,"Query Processing")
 
     def run(self):
         UIComponents.render_header()
