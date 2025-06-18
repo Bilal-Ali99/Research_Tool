@@ -6,7 +6,7 @@ import streamlit as st
 import google.generativeai as genai
 from urllib.parse import urlparse
 from typing import List, Tuple
-import re
+
 
 def validate_url(url: str) -> bool:
     """

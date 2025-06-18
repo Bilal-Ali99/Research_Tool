@@ -4,7 +4,7 @@ Streamlit UI Component for research Tool
 
 import streamlit as st
 from typing import List, Dict, Any, Optional
-from config import Config
+from config import config  # Import the instance, not the class
 from utils import truncate_text
 
 
@@ -13,10 +13,10 @@ class UIComponents:
     @staticmethod
     def setup_page_config():
         st.set_page_config(
-            page_title = Config.streamlit.page_title,
-            page_icon = Config.streamlit.page_icon,
-            layout = Config.streamlit.layout
-            )
+            page_title=config.streamlit.page_title,  # Use config instance
+            page_icon=config.streamlit.page_icon,    # Use config instance
+            layout=config.streamlit.layout           # Use config instance
+        )
 
     @staticmethod
     def render_header():
@@ -27,7 +27,7 @@ class UIComponents:
             **Welcome to the Research Tool**
 
             This Tool Allows you to:
-            -> :Book: Process Multiple Web URLs
+            -> 📚 Process Multiple Web URLs
             -> Create Intelligent Embeddings
             -> Ask Questions about the Content
             -> Get Answers with source attribution
@@ -35,7 +35,6 @@ class UIComponents:
             """
         )
         st.markdown("---")
-
 
     @staticmethod
     def render_sidebar():
@@ -52,54 +51,51 @@ class UIComponents:
 
             UIComponents._render_help_section()
 
-            return api_key,chunk_overlap,chunk_size,search_k
-        
-        @staticmethod
-        def _render_api_key_section():
-            
-            st.subheader("API Configuration")
+            return api_key, chunk_size, chunk_overlap, search_k  # Fixed order
+    
+    @staticmethod
+    def _render_api_key_section():
+        st.subheader("API Configuration")
 
-            api_key = st.text_input(
-                "GEMINI_API_KEY",
-                type="password",
-                help="Get your API key from Google AI Studio: https://makersuite.google.com/app/apikey",
-                placeholder="Enter your Google API key here..."
-            )
+        api_key = st.text_input(
+            "GEMINI_API_KEY",
+            type="password",
+            help="Get your API key from Google AI Studio: https://makersuite.google.com/app/apikey",
+            placeholder="Enter your Google API key here..."
+        )
 
-            if api_key:
-                st.success("✅ API Key provided")
-            else:
-                st.warning("⚠️ API Key required")
-                st.info("👆 Please enter your Google API Key to continue")
-        
-            return api_key
-        
-        @staticmethod
-
-        def _render_chunking_section():
-            """Render chunking parameters section"""
-            st.subheader("📝 Text Chunking")
-        
-            chunk_size = st.slider(
+        if api_key:
+            st.success("✅ API Key provided")
+        else:
+            st.warning("⚠️ API Key required")
+            st.info("👆 Please enter your Google API Key to continue")
+    
+        return api_key
+    
+    @staticmethod
+    def _render_chunking_section():
+        """Render chunking parameters section"""
+        st.subheader("📝 Text Chunking")
+    
+        chunk_size = st.slider(
             "Chunk Size",
             min_value=500,
             max_value=2000,
-            value=Config.chunking.chunk_size,
+            value=config.chunking.chunk_size,  # Use config instance
             step=100,
             help="Size of each text chunk in characters"
-            )
-            
-            chunk_overlap = st.slider(
+        )
+        
+        chunk_overlap = st.slider(
             "Chunk Overlap",
             min_value=50,
             max_value=500,
-            value=Config.chunking.chunk_overlap,
+            value=config.chunking.chunk_overlap,  # Use config instance
             step=50,
             help="Overlap between consecutive chunks"
-            )
+        )
 
-            return chunk_size, chunk_overlap
-        
+        return chunk_size, chunk_overlap
 
     @staticmethod
     def _render_retrieval_section():
@@ -110,7 +106,7 @@ class UIComponents:
             "Documents to Retrieve",
             min_value=1,
             max_value=10,
-            value= Config.retrieval.search_k,
+            value=config.retrieval.search_k,  # Use config instance
             help="Number of relevant documents to retrieve for each query"
         )
         
