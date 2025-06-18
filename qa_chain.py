@@ -3,7 +3,7 @@ Question answering chain module using RetrievalQAWithSourcesChain
 """
 
 import streamlit as st
-from langchain.llms import GoogleGenerativeAI
+from langchain_google_genai import GoogleGenerativeAI
 from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.prompts import PromptTemplate
 from typing import Dict, Any, Optional

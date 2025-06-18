@@ -3,8 +3,8 @@ Document processing module for loading and chunking web content
 """
 
 import streamlit as st
-from langchain.document_loaders import WebBaseLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import WebBaseLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from typing import List, Optional
 from langchain.schema import Document
 

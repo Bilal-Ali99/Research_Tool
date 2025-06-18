@@ -3,8 +3,8 @@ Vector store management module for embeddings and similarity search
 """
 
 import streamlit as st
-
-from langchain.vectorstores import FAISS
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.vectorstores import FAISS
 from langchain.schema import Document
 from typing import List, Optional, Tuple
 import os
@@ -228,7 +228,7 @@ class VectorStoreManager:
                     return False
             
             with st.spinner("Loading vector store..."):
-                self.vector_store = FAISS.load_local(path, self.embeddings)
+                self.vector_store = FAISS.load_local(path, self.embeddings, allow_dangerous_deserialization=True)
             
             show_success_message(f"Vector store loaded from {path}")
             return True
