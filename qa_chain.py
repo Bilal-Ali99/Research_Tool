@@ -63,7 +63,7 @@ class QAChainManager:
                 if not self._initialize_llm():
                     return False
             
-            if not vector_store_manager.vector_store:
+            if not vector_store_manager or not vector_store_manager.vector_store:
                 show_error_message(ValueError("No vector store available"), "QA Chain Setup")
                 return False
             
@@ -234,18 +234,24 @@ class QAChainManager:
             bool: True if successful, False otherwise
         """
         try:
+            # Update config first
             config.retrieval.search_k = search_k
             
-            # Recreate retriever with new settings
-            if self.vector_store_manager and self.qa_chain:
+            # Only update the chain if both vector store manager and qa_chain exist
+            if self.vector_store_manager and self.vector_store_manager.vector_store and self.qa_chain:
+                # Create new retriever with updated settings
                 retriever = self.vector_store_manager.get_retriever({"k": search_k})
-                self.qa_chain.retriever = retriever
-                
-                show_success_message(f"Updated retrieval settings - K: {search_k}")
-                return True
+                if retriever:
+                    self.qa_chain.retriever = retriever
+                    show_success_message(f"Updated retrieval settings - K: {search_k}")
+                    return True
+                else:
+                    show_error_message(ValueError("Failed to create retriever"), "Update Settings")
+                    return False
             else:
-                show_error_message(ValueError("QA Chain or Vector Store not available"), "Update Settings")
-                return False
+                # Just update the config if chain isn't ready yet
+                st.info(f"Retrieval settings updated - K: {search_k} (will apply when QA chain is ready)")
+                return True
                 
         except Exception as e:
             show_error_message(e, "Update Retrieval Settings")
